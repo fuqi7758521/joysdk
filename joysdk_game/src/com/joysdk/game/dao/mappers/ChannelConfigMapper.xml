@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.ChannelConfigMapper">
+
+	<resultMap type="ChannelConfig" id="channelConfigResultMap">
+		<result property="id" column="ID" />
+		<result property="gameId" column="GAME_ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="icon" column="ICON" />
+		<result property="splashPic" column="SPLASH_PIC" />
+		<result property="packageName" column="PACKAGE_NAME" />
+		<collection property="sdkConfigs" ofType="GameSDKConfig" 
+			column="{channelConfigId=ID, channelId=CHANNEL_ID}" javaType="ArrayList" 
+			select="com.joysdk.game.dao.GameSDKConfigMapper.getSDKConfigByChannelConfigId"/>
+	</resultMap>
+	
+	<insert id="insertChannelConfig" parameterType="ChannelConfig" useGeneratedKeys="true" keyProperty="id">
+		insert into T_GAME_CHANNEL_CONFIG (GAME_ID, CHANNEL_ID, ICON, SPLASH_PIC, PACKAGE_NAME) values(
+			#{gameId}, #{channelId}, #{icon,jdbcType=VARCHAR}, #{splashPic, jdbcType=VARCHAR}, #{packageName}
+		);
+	</insert>
+	
+	<update id="updateChannelConfig" parameterType="ChannelConfig">
+		update T_GAME_CHANNEL_CONFIG set ID=#{id}
+		<if test="packageName != null and packageName != ''">
+			, PACKAGE_NAME=#{packageName}
+		</if>
+		<if test="icon != null and icon != ''">
+			, ICON=#{icon}
+		</if>
+		<if test="splashPic != null and splashPic != ''">
+			, SPLASH_PIC=#{splashPic}
+		</if>
+		where ID=#{id}
+	</update>
+	
+	<select id="getChannelConfigByGameId" parameterType="java.util.Map" resultType="ChannelConfig" resultMap="channelConfigResultMap">
+		select * from T_GAME_CHANNEL_CONFIG where GAME_ID=#{gameId} and CHANNEL_ID=#{channelId} limit 1
+	</select>
+</mapper>

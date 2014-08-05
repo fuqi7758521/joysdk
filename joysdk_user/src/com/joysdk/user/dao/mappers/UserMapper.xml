@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.user.dao.UserMapper">
+
+	<resultMap type="User" id="userResultMap">
+		<id property="id" column="ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="password" column="PASSWORD" />
+		<result property="email" column="EMAIL" />
+		<result property="phone" column="PHONE" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="registerIp" column="REGISTER_IP" />
+		<result property="remark" column="REMARK" />
+		<result property="status" column="STATUS" />
+		<result property="dateCreated" column="DT_REGISTER_TIME" />
+		<result property="referUserId" column="REFEREE_ID" />
+		<result property="userType" column="USER_TYPE" />
+		<result property="cpId" column="CP_ID" />
+		<result property="registerGameId" column="REGISTER_GAME_ID" />
+	</resultMap>
+	
+	<insert id="createUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into T_USER
+		(
+			USER_NAME, PASSWORD, EMAIL, PHONE, STATUS, CHANNEL_ID, DT_REGISTER_TIME, 
+			REGISTER_GAME_ID, REGISTER_IP, REFEREE_ID, USER_TYPE, CP_ID, REMARK
+		)
+		values
+		(
+			#{userName}, #{password}, #{email}, #{phone}, #{status}, #{channelId}, now(), 
+			#{registerGameId}, #{registerIp}, #{referUserId}, #{userType}, #{cpId}, #{remark}
+		);
+	</insert>
+	
+	<select id="checkAccount" parameterType="java.util.Map" resultType="User" resultMap="userResultMap">
+		select * from T_USER u where 
+		<if test="userName != null and userName != '' ">
+			u.USER_NAME=#{userName}
+		</if>
+		<if test="email != null and email != '' ">
+			u.EMAIL=#{email}
+		</if>
+		<if test="phone != null and phone != '' ">
+			u.PHONE=#{phone}
+		</if>
+	</select>
+	
+	<select id="checkLogin" parameterType="java.util.Map" resultType="User" resultMap="userResultMap">
+		select * from T_USER u where 
+		<if test="userName != null and userName != '' ">
+			u.USER_NAME=#{userName} and
+		</if>
+		<if test="email != null and email != '' ">
+			u.EMAIL=#{email} and
+		</if>
+		<if test="phone != null and phone != '' ">
+			u.PHONE=#{phone} and
+		</if>
+		 u.password=#{password}
+	</select>
+	
+	<select id="getUserById" parameterType="java.util.Map" resultType="User" resultMap="userResultMap">
+		select * from T_USER u where u.ID=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="User">
+		update T_USER 
+		<set>
+			<if test="email != null and email != ''">
+				EMAIL=#{email},
+			</if>
+			<if test="phone != null and phone != ''">
+				PHONE=#{phone},
+			</if>
+		  	<if test="password != null and password != ''">
+				PASSWORD=#{password},
+			</if>
+		  	<if test="userType != 0">
+				USER_TYPE=#{userType},
+			</if>
+		  	<if test="status != 0">
+				STATUS=#{status},
+			</if>
+			<if test="remark != null and remark != ''">
+				REMARK=#{remark}
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+</mapper>

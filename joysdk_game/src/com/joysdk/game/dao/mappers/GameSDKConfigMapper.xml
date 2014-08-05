@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.GameSDKConfigMapper">
+
+	<resultMap type="GameSDKConfig" id="gameSDKConfigResultMap">
+		<result property="channelProValue" column="PROPERY_VALUE" />
+		<result property="channelConfigId" column="CHANNEL_CONFIG_ID" />
+		<result property="channelPropery.id" column="CHANNEL_PRO_ID" />
+		<result property="channelPropery.properyName" column="PROPERY_NAME" />
+		
+	</resultMap>
+	
+	<insert id="insertSDKConfig" parameterType="GameSDKConfig" useGeneratedKeys="true" keyProperty="id">
+		insert into T_GAME_SDK_CONFIG (CHANNEL_PRO_ID, PROPERY_VALUE, CHANNEL_CONFIG_ID) values(
+			#{channelPropery.id}, #{channelProValue}, #{channelConfigId}
+		);
+	</insert>
+	
+	<update id="updateSDKConfig" parameterType="GameSDKConfig">
+		update T_GAME_SDK_CONFIG set PROPERY_VALUE=#{channelProValue}
+		where CHANNEL_PRO_ID=#{channelPropery.id}
+	</update>
+	
+	<select id="getSDKConfigByChannelConfigId" parameterType="java.util.Map" resultType="GameSDKConfig" resultMap="gameSDKConfigResultMap">
+		select CHANNEL_PRO_ID, PROPERY_NAME, PROPERY_VALUE, CHANNEL_CONFIG_ID from T_GAME_SDK_CONFIG c inner join T_GAME_CHANNEL_PROPERY p
+		where c.CHANNEL_PRO_ID=p.ID and c.CHANNEL_CONFIG_ID=#{channelConfigId} and p.CHANNEL_ID=#{channelId} order by p.ID
+	</select>
+	
+</mapper>

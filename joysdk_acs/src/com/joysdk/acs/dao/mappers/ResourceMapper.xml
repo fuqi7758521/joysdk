@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.acs.dao.ResourceDAO">
+	
+	<insert id="add" parameterType="Resource">
+		insert into T_ACS_RESOURCE(URL, DES, PID, TYPE) values (#{url},#{des},#{pid},#{type})
+	</insert>
+	
+	<update id="update" parameterType="Resource">
+		update T_ACS_RESOURCE set ID=ID
+		<if test="url !=null and url != ''">, URL=#{url}</if>
+		<if test="des !=null and des != ''">, DES=#{des}</if>
+		<if test="pid !=null and pid != ''">, PID=#{pid}</if>
+		<if test="type !=null">, TYPE=#{type}</if>
+		where ID=#{id}
+	</update>
+		
+	<delete id="delete" parameterType="long">
+		delete from T_ACS_RESOURCE where ID=#{id}
+	</delete>
+	
+	<select id="getResources" parameterType="ResourceCriteria" resultType="Resource">
+		select ID id,  URL url, DES des, PID pid, TYPE type from T_ACS_RESOURCE where
+		1=1
+		<if test="id != null and id != 0"> and ID=#{id}</if>
+		<if test="type != null"> and TYPE=#{type}</if>
+	</select>
+	
+	<select id="getResourcesCnt" parameterType="ResourceCriteria" resultType="long">
+		select count(*) from T_ACS_RESOURCE where
+		1=1
+		<if test="id != null and id != 0"> and ID=#{id}</if>
+		<if test="type != null"> and TYPE=#{type}</if>
+	</select>
+	
+	<select id="getMenusByUserId" parameterType="long" resultType="Resource">
+		select T_ACS_RESOURCE.ID id, T_ACS_RESOURCE.URL url, T_ACS_RESOURCE.DES des, 
+		T_ACS_RESOURCE.PID pid,  T_ACS_RESOURCE.TYPE type
+		from T_ACS_ROLE
+		inner join T_ACS_USER_ROLE on T_ACS_USER_ROLE.ROLE_ID = T_ACS_ROLE.ID
+		inner join T_ACS_ROLE_RESOURCE on T_ACS_ROLE.ID = T_ACS_ROLE_RESOURCE.ROLE_ID
+		inner join T_ACS_RESOURCE on T_ACS_ROLE_RESOURCE.RESOURCE_ID = T_ACS_RESOURCE.ID
+		where T_ACS_USER_ROLE.USER_ID = #{userId} and T_ACS_RESOURCE.TYPE=1
+	</select>
+	
+	<select id="getUrlsByUserId" parameterType="long" resultType="Resource">
+		select T_ACS_RESOURCE.ID id, T_ACS_RESOURCE.URL url, T_ACS_RESOURCE.DES des, 
+		T_ACS_RESOURCE.PID pid,  T_ACS_RESOURCE.TYPE type
+		from T_ACS_ROLE
+		inner join T_ACS_USER_ROLE on T_ACS_USER_ROLE.ROLE_ID = T_ACS_ROLE.ID
+		inner join T_ACS_ROLE_RESOURCE on T_ACS_ROLE.ID = T_ACS_ROLE_RESOURCE.ROLE_ID
+		inner join T_ACS_RESOURCE on T_ACS_ROLE_RESOURCE.RESOURCE_ID = T_ACS_RESOURCE.ID
+		where T_ACS_USER_ROLE.USER_ID = #{userId} and T_ACS_RESOURCE.TYPE=2
+	</select>
+	
+	<select id="getById" parameterType="long" resultType="Resource">
+		select ID id,  URL url, DES des, PID pid, TYPE type from T_ACS_RESOURCE
+		where id=#{id}
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.CPMapper">
+
+	<resultMap type="CP" id="cpResultMap">
+		<id property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="secretKey" column="SECRET_KEY" />
+		<result property="notifyKey" column="NOTICE_KEY" />
+		<result property="status" column="STATUS" />
+		<result property="dtCreateTime" column="DT_CREATED_TIME" />
+	</resultMap>
+	
+	<insert id="createCP" parameterType="CP" useGeneratedKeys="true" keyProperty="id">
+		insert into T_GAME_CP (NAME, SECRET_KEY, NOTICE_KEY, DT_CREATED_TIME) values(#{name}, #{secretKey}, #{notifyKey}, now());
+	</insert>
+	
+	<update id="updateCP" parameterType="CP">
+		update T_GAME_CP set NAME=#{name}, SECRET_KEY=#{secretKey}, NOTICE_KEY=#{notifyKey} where ID=#{id}
+	</update>
+	
+	<select id="getCPById" parameterType="Integer" resultType="CP" resultMap="cpResultMap">
+		select * from T_GAME_CP where ID=#{id}
+	</select>
+	
+</mapper>

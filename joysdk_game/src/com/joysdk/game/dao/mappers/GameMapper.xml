@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.GameMapper">
+	<resultMap type="Game" id="gameResultMap">
+		<id property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="alias" column="ALIAS" />
+		<result property="cpId" column="CP_ID" />
+		<result property="packageName" column="PACKAGE_NAME" />
+		<result property="version" column="VERSION" />
+		<result property="seqNum" column="SEQ_NUM" />
+		<result property="coin" column="COIN" />
+		<result property="coinRatio" column="COIN_RATIO" />
+		<result property="status" column="STATUS" />
+		<result property="website" column="WEB_SITE" />
+		<result property="dtCreateTime" column="DT_CREATED_TIME" />
+	</resultMap>
+	
+	<resultMap type="GameConfig" id="configResultMap">
+		<result property="gameId" column="GAME_ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="proName" column="PROPERY_NAME" />
+		<result property="proValue" column="PROPERY_VALUE" />
+	</resultMap>
+	
+	<insert id="createGame" parameterType="Game">
+		insert into T_GAME (NAME, ALIAS, PACKAGE_NAME, CP_ID, SEQ_NUM, VERSION, COIN, COIN_RATIO, 
+		STATUS, WEB_SITE, DT_CREATED_TIME) values (
+    			#{name}, #{alias}, #{packageName}, #{cpId}, #{seqNum}, #{version}, #{coin}, #{coinRatio}, #{status}, #{website}, now()
+    		);
+	</insert>
+	
+	<update id="updateGame" parameterType="Game">
+		update T_GAME set NAME=#{name}, ALIAS=#{alias}, PACKAGE_NAME=#{packageName}, VERSION=#{version},
+						 COIN=#{coin}, COIN_RATIO=#{coinRatio}, STATUS=#{status}, WEB_SITE=#{website}
+		where ID=#{id}
+	</update>
+	
+	<select id="checkGameAlias" parameterType="String" resultType="int">
+		select count(*) from T_GAME where ALIAS=#{alias}
+	</select>
+	
+	<select id="getGameById" parameterType="Integer" resultType="Game" resultMap="gameResultMap">
+		select * from T_GAME where ID=#{id}
+	</select>
+	
+	<select id="getGameIdsByCpId" parameterType="Integer" resultType="int">
+		select id from T_GAME where CP_ID=#{cpId}
+	</select>
+	
+	<select id="getGameConfigByGameId" parameterType="java.util.Map" resultType="java.util.Map">
+		select PROPERY_NAME, PROPERY_VALUE from T_GAME_SDK_CONFIG where GAME_ID=#{gameId} and CHANNEL_ID=#{channelId}
+	</select>
+	
+</mapper>

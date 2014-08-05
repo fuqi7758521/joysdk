@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.user.dao.UserLogMapper">
+
+	<resultMap type="UserLog" id="userLogResultMap">
+		<id property="userId" column="USER_ID" />
+		<result property="loginIp" column="LOGIN_IP" />
+		<result property="loginUA" column="LOGIN_UA" />
+		<result property="gameId" column="GAME_ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="loginDate" column="DT_LOGIN_DATE" />
+	</resultMap>
+	
+	<insert id="createUserLog" parameterType="UserLog" useGeneratedKeys="true">
+		insert into T_USER_LOGIN_LOG
+		(
+			USER_ID, LOGIN_IP, LOGIN_UA, GAME_ID, DT_LOGIN_DATE
+		)
+		values
+		(
+			#{userId}, #{loginIp}, #{loginUA}, #{gameId}, #{loginDate}
+		);
+	</insert>
+	
+</mapper>

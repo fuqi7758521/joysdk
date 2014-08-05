@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.user.dao.UserInfoMapper">
+
+	<resultMap type="UserInfo" id="userInfoResultMap">
+		<id property="userId" column="USER_ID" />
+		<result property="nickName" column="NICKNAME" />
+		<result property="realName" column="REAL_NAME" />
+		<result property="idCard" column="ID_CARD_NO" />
+		<result property="qq" column="QQ" />
+		<result property="dtBirtherDay" column="DT_BIRTHDAY" />
+		<result property="avatarUrl" column="AVATAR_URL" />
+		<result property="gender" column="GENDER" />
+		<result property="lastLoginGameId" column="DT_LASTLOING_TIME" />
+		<result property="lastLoginDate" column="LASTLOGIN_GAME_ID" />
+	</resultMap>
+	
+	<insert id="createUserInfo" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into T_USER_INFO
+		(
+			USER_ID, NICKNAME, REAL_NAME, ID_CARD_NO, QQ, DT_BIRTHDAY, AVATAR_URL, GENDER, DT_LASTLOING_TIME, LASTLOGIN_GAME_ID
+		)
+		values
+		(
+			#{userId}, #{nickName}, #{realName}, #{idCard}, #{qq}, #{dtBirtherDay}, #{avatarUrl}, #{gender}, #{lastLoginGameId}, #{lastLoginDate}
+		);
+	</insert>
+	
+	<select id="getUserInfo" parameterType="Integer" resultType="UserInfo" resultMap="userInfoResultMap">
+		select * from T_USER_INFO where USER_ID=#{userId}
+	</select>
+	
+</mapper>

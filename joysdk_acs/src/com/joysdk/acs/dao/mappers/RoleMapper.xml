@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.acs.dao.RoleDAO">
+	
+	<insert id="add" parameterType="Role">
+		insert into T_ACS_ROLE(NAME) values (#{name})
+	</insert>
+	
+	<update id="update" parameterType="Role">
+		update T_ACS_ROLE set ID=ID
+		<if test="name !=null and name != ''">, NAME=#{name}</if>
+		<if test="status !=null">, STATUS=#{status}</if>
+		where ID=#{id}
+	</update>
+		
+	<delete id="delete" parameterType="long">
+		delete from T_ACS_ROLE where ID=#{id}
+	</delete>
+	
+	<select id="getRoles" parameterType="RoleCriteria" resultType="Role">
+		select ID id, NAME name, STATUS status from T_ACS_ROLE where
+		1=1
+		<if test="id != null and id != 0"> and ID=#{id}</if>
+		<if test="status != null"> and STATUS=#{status}</if>
+		<if test="name != null and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+	</select>
+	
+	<select id="getRolesCnt" parameterType="RoleCriteria" resultType="long">
+		select count(*) from T_ACS_ROLE where
+		1=1
+		<if test="id != null and id != 0"> and ID=#{id}</if>
+		<if test="status != null"> and STATUS=#{status}</if>
+		<if test="name != null and name != ''"> and NAME like concat('%', #{name}, '%')</if>
+	</select>
+	
+	<select id="getById" parameterType="long" resultType="Role">
+		select ID id, NAME name, STATUS status from T_ACS_ROLE where
+		ID=#{id}
+	</select>
+</mapper>

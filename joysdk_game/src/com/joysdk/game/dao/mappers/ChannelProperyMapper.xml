@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.ChannelProperyMapper">
+
+	<resultMap type="ChannelPropery" id="channelProperyResultMap">
+		<id property="id" column="ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="gameId" column="GAME_ID" />
+		<result property="properyName" column="PROPERY_NAME" />
+	</resultMap>
+	
+	<insert id="insertChannelPropery" parameterType="ChannelPropery" useGeneratedKeys="true" keyProperty="id">
+		insert into T_GAME_CHANNEL_PROPERY (CHANNEL_ID, GAME_ID, PROPERY_NAME) values(
+			#{channelId}, #{gameId, jdbcType=NUMERIC}, #{properyName}
+		);
+	</insert>
+	
+	<select id="getProperysByChannelId" parameterType="Integer" resultType="ChannelPropery" resultMap="channelProperyResultMap">
+		select * from T_GAME_CHANNEL_PROPERY where CHANNEL_ID=#{channelId} order by id
+	</select>
+	
+	<update id="updateChannelPropery">
+		update T_GAME_CHANNEL_PROPERY set PROPERY_NAME=#{properyName} where ID=#{id}
+	</update>
+</mapper>

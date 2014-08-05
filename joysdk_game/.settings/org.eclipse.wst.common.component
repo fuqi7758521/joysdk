@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="joysdk_game">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/" source-path="/webapp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
+        <dependent-module archiveName="joysdk_common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/joysdk_common/joysdk_common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/joysdk_game/target/classes"/>
+        <property name="context-root" value="/game"/>
+    </wb-module>
+</project-modules>

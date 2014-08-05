@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joysdk.game.dao.ChannelMapper">
+
+	<resultMap type="Channel" id="channelResultMap">
+		<id property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="pid" column="PID" />
+		<result property="status" column="STATUS" />
+		<result property="cpId" column="CP_ID" />
+		<collection property="proNames" column="id" javaType="ArrayList" ofType="ChannelPropery" select="com.joysdk.game.dao.ChannelProperyMapper.getProperysByChannelId"/>
+	</resultMap>
+	
+	<resultMap type="Channel" id="channelNoProNamesResultMap">
+		<id property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="pid" column="PID" />
+		<result property="status" column="STATUS" />
+		<result property="cpId" column="CP_ID" />
+	</resultMap>
+	
+	<insert id="createChannel" parameterType="Channel" useGeneratedKeys="true" keyProperty="id">
+		insert into T_GAME_CHANNEL (NAME, PID, STATUS) values(
+			#{name}, #{pid}, 1
+		);
+	</insert>
+	
+	<select id="getChannelById" parameterType="Integer" resultType="Channel" resultMap="channelResultMap">
+		select * from T_GAME_CHANNEL where ID=#{id}
+	</select>
+	
+	<sql id="where-channels">
+		where PID=#{pid} 
+		<if test="cpId !=0">
+			and CP_ID=#{cpId}
+		</if>
+	</sql>
+	
+	<select id="getChannels" resultType="Channel" resultMap="channelNoProNamesResultMap">
+		select * from T_GAME_CHANNEL 
+		<include refid="where-channels"/>
+		order by id desc
+		<if test="start != -1 and size != -1">
+			limit #{start}, #{size}
+		</if>
+	</select>
+	
+	<select id="countChannels" resultType="int">
+		select count(*) from T_GAME_CHANNEL
+		<include refid="where-channels"/>
+	</select>
+	
+	<update id="updateChannel">
+		update T_GAME_CHANNEL 
+		<set>
+			ID=#{id}
+			<if test="name != null and name !=''">
+				,NAME=#{name}
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+</mapper>

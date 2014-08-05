@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias alias="Game" type="com.joysdk.common.game.model.Game" />
+		<typeAlias alias="CP" type="com.joysdk.common.game.model.CP" />
+		<typeAlias alias="Channel" type="com.joysdk.game.model.Channel" />
+		<typeAlias alias="ChannelPropery" type="com.joysdk.game.model.ChannelPropery" />
+		<typeAlias alias="GameConfig" type="com.joysdk.game.model.GameConfig" />
+		<typeAlias alias="KeyStore" type="com.joysdk.game.model.KeyStore" />
+		<typeAlias alias="GameSDKConfig" type="com.joysdk.game.model.GameSDKConfig" />
+		<typeAlias alias="ChannelConfig" type="com.joysdk.game.model.ChannelConfig" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/joysdk/game/dao/mappers/GameMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/CPMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/ChannelMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/ChannelProperyMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/KeyStoreMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/GameSDKConfigMapper.xml" />
+		<mapper resource="com/joysdk/game/dao/mappers/ChannelConfigMapper.xml" />
+	</mappers>
+</configuration>		

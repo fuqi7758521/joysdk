@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias alias="Role" type="com.joysdk.common.acs.model.Role" />
+		<typeAlias alias="Resource" type="com.joysdk.common.acs.model.Resource" />
+		
+		<typeAlias alias="RoleCriteria" type="com.joysdk.acs.criteria.RoleCriteria" />
+		<typeAlias alias="ResourceCriteria" type="com.joysdk.acs.criteria.ResourceCriteria" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/joysdk/acs/dao/mappers/RoleMapper.xml" />
+		<mapper resource="com/joysdk/acs/dao/mappers/ResourceMapper.xml" />
+	</mappers>
+</configuration>		

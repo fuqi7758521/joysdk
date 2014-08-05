@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- game redis -->
+	<bean id="gameRedisService" class="com.joysdk.common.resource.RedisService">
+		<property name="jedisPool" ref="gameJedisPool" />
+	</bean>
+	
+	<bean id="gameJedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig"/>
+		<constructor-arg index="1">
+			<value>${game.redis.host}</value>
+        </constructor-arg>
+		<constructor-arg index="2">
+			<value>${game.redis.port}</value>
+        </constructor-arg>
+		<constructor-arg index="3">
+			<value>${redis.timeout}</value>
+        </constructor-arg>
+	</bean> 
+	
+	<bean id="gameRemoteServiceBean" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="${game.service.remote.url}"/>
+		<property name="serviceInterface" value="com.joysdk.common.game.service.remote.GameServiceRemote"/>
+	</bean>
+	
+	<bean id="gameProxy" class="com.joysdk.common.game.proxy.GameProxy">
+		<property name="gameRedisService" ref="gameRedisService"/>
+		<property name="gameRemoteService" ref="gameRemoteServiceBean"/>
+	</bean>
+</beans>
